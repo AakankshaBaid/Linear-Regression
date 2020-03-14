@@ -1,0 +1,50 @@
+---
+title: "MLRegression"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#Read data
+ Ex1 <- read.csv("/cloud/project/Ex1_Data_R.csv")
+
+#Convert Sales from factor to numeric by removing $
+Ex1$Sales = as.numeric(gsub("\\$", "", Ex1$Sales))
+str(test1)
+```
+
+```{r load-data-for-show, include=FALSE}
+
+# Run the Regression model
+
+model <- lm(Sales ~ . - Day, data = Ex1)
+summary(model)
+anova(model)
+
+# Correlation matrix for predictor correlations (check for multicollinearity)
+ matrix <- cor(Ex1[,2:11])
+ round(matrix, 2)
+
+# Plots 
+par(mfrow=c(2,2))
+plot(model)
+```
+
+
+```{r load-data-for-show, include=FALSE}
+
+# Run the Regression again with only significant variables (p< 0.05)
+
+model1 <- lm(Sales ~ TV + SEO + Paid.Search + Facebook, data = Ex1)
+summary(model1)
+anova(model1)
+
+par(mfrow=c(2,2))
+plot(model1)
+```
